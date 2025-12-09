@@ -1,0 +1,43 @@
+"use client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+
+const destinations = [
+  { name: "Bali", img: "/destinations/bali.jpg" },
+  { name: "Paris", img: "/destinations/paris.jpg" },
+  { name: "Nepal", img: "/destinations/nepal.jpg" },
+  { name: "Bangkok", img: "/destinations/bangkok.jpg" },
+];
+
+export const PopularDestinations = () => {
+  return (
+    <section className="container mx-auto px-6 py-16">
+      <h2 className="text-3xl font-semibold mb-8 text-center">
+        Popular Destinations
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        {destinations.map((place) => (
+          <motion.div
+            key={place.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            viewport={{ once: true }}
+            className="rounded-xl overflow-hidden shadow-md hover:scale-[1.02] transition"
+          >
+            <Image
+              src={place.img}
+              alt={place.name}
+              width={300}
+              height={200}
+              className="w-full h-48 object-cover"
+            />
+            <div className="p-4 text-center font-medium text-lg">
+              {place.name}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+};
