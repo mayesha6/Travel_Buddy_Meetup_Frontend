@@ -6,8 +6,7 @@ import InputFieldError from "./shared/InputFieldError";
 import { Button } from "./ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
-
-
+import { Textarea } from "./ui/textarea";
 
 const RegisterForm = () => {
   const [state, formAction, isPending] = useActionState(registerUser, null);
@@ -17,6 +16,7 @@ const RegisterForm = () => {
       toast.error(state.message);
     }
   }, [state]);
+
   return (
     <form action={formAction}>
       <FieldGroup>
@@ -27,53 +27,85 @@ const RegisterForm = () => {
             <Input id="name" name="name" type="text" placeholder="John Doe" />
             <InputFieldError field="name" state={state} />
           </Field>
-          {/* Address */}
-          <Field>
-            <FieldLabel htmlFor="address">Address</FieldLabel>
-            <Input
-              id="address"
-              name="address"
-              type="text"
-              placeholder="123 Main St"
-            />
-            <InputFieldError field="address" state={state} />
-          </Field>
+
           {/* Email */}
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="m@example.com"
-            />
+            <Input id="email" name="email" type="email" placeholder="m@example.com" />
             <InputFieldError field="email" state={state} />
           </Field>
+
           {/* Password */}
           <Field>
             <FieldLabel htmlFor="password">Password</FieldLabel>
             <Input id="password" name="password" type="password" />
-
             <InputFieldError field="password" state={state} />
           </Field>
-          {/* Confirm Password */}
-          <Field className="md:col-span-2">
-            <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
-            <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-            />
 
+          {/* Confirm Password */}
+          <Field>
+            <FieldLabel htmlFor="confirmPassword">Confirm Password</FieldLabel>
+            <Input id="confirmPassword" name="confirmPassword" type="password" />
             <InputFieldError field="confirmPassword" state={state} />
           </Field>
+
+          {/* Address */}
+          <Field>
+            <FieldLabel htmlFor="address">Address</FieldLabel>
+            <Input id="address" name="address" type="text" placeholder="123 Main St" />
+            <InputFieldError field="address" state={state} />
+          </Field>
+
+          {/* Phone */}
+          <Field>
+            <FieldLabel htmlFor="phone">Phone</FieldLabel>
+            <Input id="phone" name="phone" type="text" placeholder="+8801XXXXXXXXX" />
+            <InputFieldError field="phone" state={state} />
+          </Field>
+
+          {/* Bio */}
+          <Field className="md:col-span-2">
+            <FieldLabel htmlFor="bio">Bio</FieldLabel>
+            <Textarea id="bio" name="bio" placeholder="Tell us something about yourself" />
+            <InputFieldError field="bio" state={state} />
+          </Field>
+
+          {/* Travel Interests */}
+          <Field className="md:col-span-2">
+            <FieldLabel htmlFor="travelInterests">Travel Interests</FieldLabel>
+            <Input
+              id="travelInterests"
+              name="travelInterests"
+              type="text"
+              placeholder="e.g., Hiking, Beaches, Museums"
+            />
+            <FieldDescription>
+              Separate multiple interests with commas
+            </FieldDescription>
+            <InputFieldError field="travelInterests" state={state} />
+          </Field>
+
+          {/* Visited Countries */}
+          <Field className="md:col-span-2">
+            <FieldLabel htmlFor="visitedCountries">Visited Countries</FieldLabel>
+            <Input
+              id="visitedCountries"
+              name="visitedCountries"
+              type="text"
+              placeholder="e.g., Bangladesh, India, USA"
+            />
+            <FieldDescription>
+              Separate multiple countries with commas
+            </FieldDescription>
+            <InputFieldError field="visitedCountries" state={state} />
+          </Field>
         </div>
+
         <FieldGroup className="mt-4">
           <Field>
             <Button type="submit" disabled={isPending}>
               {isPending ? "Creating Account..." : "Create Account"}
             </Button>
-
             <FieldDescription className="px-6 text-center">
               Already have an account?{" "}
               <a href="/login" className="text-blue-600 hover:underline">

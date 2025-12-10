@@ -1,4 +1,3 @@
-
 import SubscriptionTable from "@/components/modules/Subscription/SubscriptionTable";
 import { fetchSubscriptions } from "@/services/subscription/subscription.service";
 
