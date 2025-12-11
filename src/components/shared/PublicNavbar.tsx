@@ -15,9 +15,13 @@ const PublicNavbar = async () => {
   ];
 
   const accessToken = await getCookie("accessToken");
+  const isLoggedIn = !!accessToken;
+
+  // Conditional dashboard link
+  const dashboardHref = isLoggedIn ? "/dashboard" : "/login";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur  dark:bg-background/95">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur dark:bg-background/95">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold text-primary">Dream.</span>
@@ -33,10 +37,18 @@ const PublicNavbar = async () => {
               {link.label}
             </Link>
           ))}
+
+          {/* Dashboard link */}
+          <Link
+            href={dashboardHref}
+            className="text-foreground hover:text-primary transition-colors"
+          >
+            Dashboard
+          </Link>
         </nav>
 
         <div className="hidden md:flex items-center space-x-2">
-          {accessToken ? (
+          {isLoggedIn ? (
             <LogoutButton />
           ) : (
             <Link href="/login">
@@ -46,13 +58,11 @@ const PublicNavbar = async () => {
         </div>
 
         {/* Mobile Menu */}
-
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">
-                {" "}
-                <Menu />{" "}
+                <Menu />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] sm:w-[400px] p-4">
@@ -67,11 +77,23 @@ const PublicNavbar = async () => {
                     {link.label}
                   </Link>
                 ))}
+
+                {/* Dashboard link */}
+                <Link
+                  href={dashboardHref}
+                  className="text-lg font-medium"
+                >
+                  Dashboard
+                </Link>
+
                 <div className="border-t pt-4 flex flex-col space-y-4">
-                  <div className="flex justify-center"></div>
-                  <Link href="/login" className="text-lg font-medium">
-                    <Button>Login</Button>
-                  </Link>
+                  {isLoggedIn ? (
+                    <LogoutButton />
+                  ) : (
+                    <Link href="/login">
+                      <Button>Login</Button>
+                    </Link>
+                  )}
                 </div>
               </nav>
             </SheetContent>
