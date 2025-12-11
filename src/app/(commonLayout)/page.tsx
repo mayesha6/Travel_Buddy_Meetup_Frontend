@@ -1,10 +1,11 @@
-import { FeaturedTravelers } from "@/components/modules/Home/FeaturedTravelers";
 import { Hero } from "@/components/modules/Home/Hero";
 import { HowItWorks } from "@/components/modules/Home/HowItWork";
 import { Newsletter } from "@/components/modules/Home/NewsLetter";
 import { PopularDestinations } from "@/components/modules/Home/PopularDestination";
-import { PopularPlans } from "@/components/modules/Home/PopularPlans";
+import SubscriptionServer from "@/components/modules/Home/SubscriptionServer";
 import { Testimonials } from "@/components/modules/Home/Testimonial";
+import TravelPlanServer from "@/components/modules/Home/TravelPlanServer";
+import UserServer from "@/components/modules/Home/UserServer";
 import Head from "next/head";
 
 export default function Home() {
@@ -21,10 +22,11 @@ export default function Home() {
       </Head>
       <main>
         <Hero />
-        <PopularDestinations/>
         <HowItWorks/>
-        <FeaturedTravelers/>
-        <PopularPlans/>
+        <PopularDestinations/>
+        <TravelPlanServer limit={3}/>
+        <SubscriptionServer limit={3}/>
+        <UserServer limit={3}/>
         <Testimonials/>
         <Newsletter/>
       </main>

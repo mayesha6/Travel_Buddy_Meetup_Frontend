@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const destinations = [
-  { name: "Bali", img: "/destinations/bali.jpg" },
-  { name: "Paris", img: "/destinations/paris.jpg" },
-  { name: "Nepal", img: "/destinations/nepal.jpg" },
-  { name: "Bangkok", img: "/destinations/bangkok.jpg" },
+  { name: "Bali", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
+  { name: "Paris", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
+  { name: "Nepal", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
+  { name: "Bangkok", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
 ];
 
 export const PopularDestinations = () => {

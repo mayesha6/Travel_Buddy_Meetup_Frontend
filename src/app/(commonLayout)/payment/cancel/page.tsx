@@ -12,7 +12,8 @@ export default function PaymentCancelPage() {
     const message = searchParams.get("message") || "Payment cancelled";
     toast(message);
 
-    setTimeout(() => router.push("/dashboard/admin/subscription"), 2000);
+    // Redirect after 2 seconds
+    setTimeout(() => router.push("/dashboard"), 2000);
   }, [searchParams, router]);
 
   return <p>Processing payment cancellation...</p>;

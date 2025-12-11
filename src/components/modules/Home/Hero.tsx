@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
   return (
-    <section className="min-h-[80vh] flex flex-col md:flex-row items-center justify-between container mx-auto px-6 py-20">
+    <section className="min-h-[60vh] flex flex-col md:flex-row items-center justify-between container mx-auto px-6 py-10 gap-3">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ export const Hero = () => {
         transition={{ duration: 0.6 }}
         className="mt-10 md:mt-0"
       >
-        <Image src="/hero-travel.png" alt="Travel" width={500} height={500} />
+        <Image src="https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765413924/woman-hand-holding-camera-standing-top-rock-nature-travel-concept_j8z5fu.jpg" alt="Travel" width={700} height={700} />
       </motion.div>
     </section>
   );

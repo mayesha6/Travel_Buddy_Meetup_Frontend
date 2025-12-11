@@ -14,13 +14,13 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
           title: "Dashboard",
           href: defaultDashboard,
           icon: "LayoutDashboard",
-          roles: ["USER", "ADMIN"],
+          roles: ["USER", "ADMIN", "PREMIUM"],
         },
         {
           title: "My Profile",
           href: "/my-profile",
           icon: "User",
-          roles: ["USER", "ADMIN"],
+          roles: ["USER", "ADMIN", "PREMIUM"],
         },
       ],
     },
@@ -32,7 +32,7 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
           title: "Change Password",
           href: "/change-password",
           icon: "Settings",
-          roles: ["USER", "ADMIN"],
+          roles: ["USER", "ADMIN", "PREMIUM"],
         },
       ],
     },
@@ -40,7 +40,7 @@ export const getCommonNavItems = (role: UserRole): NavSection[] => {
 };
 
 /**
- * NAV ITEMS FOR NORMAL USER / TRAVELER
+ * NAV ITEMS FOR NORMAL USER & PREMIUM USERS
  */
 export const userNavItems: NavSection[] = [
   {
@@ -48,15 +48,15 @@ export const userNavItems: NavSection[] = [
     items: [
       {
         title: "My Travel Plans",
-        href: "/dashboard/my-plans",
+        href: "/dashboard/my-plan",
         icon: "Map",
-        roles: ["USER"],
+        roles: ["USER", "PREMIUM"],
       },
       {
         title: "Create New Plan",
         href: "/dashboard/create-plan",
         icon: "PlusCircle",
-        roles: ["USER"],
+        roles: ["USER", "PREMIUM"],
       },
     ],
   },
@@ -68,26 +68,37 @@ export const userNavItems: NavSection[] = [
         title: "Find Travel Buddies",
         href: "/dashboard/find-buddies",
         icon: "Users",
-        roles: ["USER"],
+        roles: ["USER", "PREMIUM"],
       },
       {
         title: "Meetups",
         href: "/dashboard/meetups",
         icon: "Handshake",
-        roles: ["USER"],
+        roles: ["USER", "PREMIUM"],
       },
       {
         title: "My Matches",
         href: "/dashboard/matches",
         icon: "HeartHandshake",
-        roles: ["USER"],
+        roles: ["USER", "PREMIUM"],
       },
+    ],
+  },
+    {
+    title: "Subscription Management",
+    items: [
+      {
+        title: "Subscription",
+        href: "/dashboard/user/subscription",
+        icon: "CreditCard",
+        roles: ["USER"],
+      }
     ],
   },
 ];
 
 /**
- * NAV ITEMS FOR ADMIN
+ * NAV ITEMS ONLY FOR ADMIN
  */
 export const adminNavItems: NavSection[] = [
   {
@@ -101,7 +112,7 @@ export const adminNavItems: NavSection[] = [
       },
       {
         title: "Suspended Accounts",
-        href: "/admin/dashboard/suspended-users",
+        href: "/dashboard/admin/suspended-users",
         icon: "UserX",
         roles: ["ADMIN"],
       },
@@ -113,32 +124,56 @@ export const adminNavItems: NavSection[] = [
     items: [
       {
         title: "Travel Plans",
-        href: "/admin/dashboard/travel-plans",
+        href: "/dashboard/admin/travel-plans",
         icon: "Map",
         roles: ["ADMIN"],
       },
       {
         title: "Meetups",
-        href: "/admin/dashboard/meetups",
+        href: "/dashboard/admin/meetups",
         icon: "Calendar",
         roles: ["ADMIN"],
       },
     ],
   },
+
   {
     title: "Subscription Management",
     items: [
       {
         title: "Subscription",
         href: "/dashboard/admin/subscription",
-        icon: "Subscription",
+        icon: "CreditCard",
         roles: ["ADMIN"],
       },
       {
         title: "Create Subscription",
         href: "/dashboard/admin/subscription/create-subscription",
-        icon: "Add",
+        icon: "Plus",
         roles: ["ADMIN"],
+      },
+    ],
+  },
+];
+
+/**
+ * NAV ITEMS ONLY FOR PREMIUM USERS
+ */
+export const premiumNavItems: NavSection[] = [
+  {
+    title: "Premium Features",
+    items: [
+      {
+        title: "Exclusive Travel Plans",
+        href: "/dashboard/premium/travel-plans",
+        icon: "MapPin",
+        roles: ["PREMIUM"],
+      },
+      {
+        title: "Premium Meetups",
+        href: "/dashboard/premium/meetups",
+        icon: "Star",
+        roles: ["PREMIUM"],
       },
     ],
   },
@@ -153,8 +188,14 @@ export const getNavItemsByRole = (role: UserRole): NavSection[] => {
   switch (role) {
     case "ADMIN":
       return [...commonNav, ...adminNavItems];
+
     case "USER":
       return [...commonNav, ...userNavItems];
+
+    case "PREMIUM":
+      // Premium = everything USER has + premium features
+      return [...commonNav, ...userNavItems, ...premiumNavItems];
+
     default:
       return [];
   }

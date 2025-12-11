@@ -1,4 +1,4 @@
-export type UserRole = "ADMIN" | "USER";
+export type UserRole = "ADMIN" | "USER" | "PREMIUM";
 
 export type RouteConfig = {
   exact: string[];
@@ -22,21 +22,27 @@ export const adminProtectedRoutes: RouteConfig = {
   patterns: [/^\/admin/], // /admin/*
 };
 
+// Include PREMIUM users in userProtectedRoutes
+export const premiumProtectedRoutes: RouteConfig = {
+  exact: [],
+  patterns: [/^\/premium/], // Optional: premium-specific pages
+};
+
 export const isAuthRoute = (pathname: string): boolean => {
   return authRoutes.includes(pathname);
 };
 
 export const isRouteMatches = (pathname: string, routes: RouteConfig): boolean => {
   if (routes.exact.includes(pathname)) return true;
-
   return routes.patterns.some((pattern) => pattern.test(pathname));
 };
 
 export const getRouteOwner = (
   pathname: string
-): "ADMIN" | "USER" | "COMMON" | null => {
+): "ADMIN" | "USER" | "PREMIUM" | "COMMON" | null => {
   if (isRouteMatches(pathname, adminProtectedRoutes)) return "ADMIN";
   if (isRouteMatches(pathname, userProtectedRoutes)) return "USER";
+  if (isRouteMatches(pathname, premiumProtectedRoutes)) return "PREMIUM";
   if (isRouteMatches(pathname, commonProtectedRoutes)) return "COMMON";
 
   return null;
@@ -44,6 +50,7 @@ export const getRouteOwner = (
 
 export const getDefaultDashboardRoute = (role: UserRole): string => {
   if (role === "ADMIN") return "/admin";
+  if (role === "PREMIUM") return "/dashboard"; 
   if (role === "USER") return "/dashboard";
   return "/";
 };
@@ -56,5 +63,6 @@ export const isValidRedirectForRole = (
 
   if (routeOwner === null || routeOwner === "COMMON") return true;
 
-  return routeOwner === role;
+  return routeOwner === role || (role === "PREMIUM" && routeOwner === "USER"); 
+  // PREMIUM can access USER routes
 };

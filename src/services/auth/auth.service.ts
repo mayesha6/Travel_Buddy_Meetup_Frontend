@@ -65,8 +65,6 @@ export async function updateMyProfile(formData: FormData) {
   }
 }
 
-
-
 export async function resetPassword(_prevState: any, formData: FormData) {
 
     const redirectTo = formData.get('redirect') || null;

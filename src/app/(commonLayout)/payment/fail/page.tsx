@@ -12,8 +12,8 @@ export default function PaymentFailPage() {
     const message = searchParams.get("message") || "Payment failed";
     toast.error(message);
 
-   
-    setTimeout(() => router.push("/dashboard/admin/subscription"), 2000);
+    // Redirect after 2 seconds
+    setTimeout(() => router.push("/dashboard"), 2000);
   }, [searchParams, router]);
 
   return <p>Processing payment failure...</p>;
