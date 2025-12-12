@@ -3,7 +3,6 @@ import { HowItWorks } from "@/components/modules/Home/HowItWork";
 import { Newsletter } from "@/components/modules/Home/NewsLetter";
 import { PopularDestinations } from "@/components/modules/Home/PopularDestination";
 import SubscriptionServer from "@/components/modules/Home/SubscriptionServer";
-import { Testimonials } from "@/components/modules/Home/Testimonial";
 import TravelPlanServer from "@/components/modules/Home/TravelPlanServer";
 import UserServer from "@/components/modules/Home/UserServer";
 import Head from "next/head";

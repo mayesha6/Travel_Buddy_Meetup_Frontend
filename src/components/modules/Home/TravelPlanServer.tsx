@@ -9,13 +9,13 @@ interface TravelPlanServerProps {
 }
 
 export default async function TravelPlanServer({ limit }: TravelPlanServerProps) {
-  // Fetch plans
+  
   const res = await getAllPlans();
   const plans = res?.data || [];
   const slicedPlans = limit ? plans.slice(0, limit) : plans;
 
-  // Fetch current user
-  const currentUser = await getCurrentUser(); // must return {_id, ...}
+  
+  const currentUser = await getCurrentUser(); 
   const currentUserId = currentUser?._id;
 
   return (

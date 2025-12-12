@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-export default function PaymentFailPage() {
+function PaymentFailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -13,8 +14,18 @@ export default function PaymentFailPage() {
     toast.error(message);
 
     // Redirect after 2 seconds
-    setTimeout(() => router.push("/dashboard"), 2000);
+    const timer = setTimeout(() => router.push("/dashboard"), 2000);
+
+    return () => clearTimeout(timer);
   }, [searchParams, router]);
 
   return <p>Processing payment failure...</p>;
+}
+
+export default function PaymentFailPage() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <PaymentFailContent />
+    </Suspense>
+  );
 }
