@@ -6,13 +6,13 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export default function UsersClient({ users }: { users: any[] }) {
+export default function UsersClientT({ users }: { users: any[] }) {
   const router = useRouter();
 
   const normalUsers = users.filter(user => user.role === "USER" || user.role === "PREMIUM");
 
   const handleView = (userId: string) => {
-    router.push(`admin/users/user/view-user/${userId}`);
+    router.push(`users/user/view-user/${userId}`);
   };
 
   return (

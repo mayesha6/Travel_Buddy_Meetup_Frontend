@@ -13,7 +13,7 @@ export default function CreatePlanPage() {
     try {
       await createPlan(payload);
       toast.success("Plan created");
-      router.push("/dashboard/my-plans");
+      router.push("/dashboard/my-plan");
     } catch (err: any) {
       toast.error(err.message || "Failed");
     }

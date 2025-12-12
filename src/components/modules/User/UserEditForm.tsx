@@ -21,20 +21,24 @@ export const UserEditForm = ({ user, onSubmit }: Props) => {
     address: user.address || "",
     role: user.role || Role.USER,
     isActive: user.isActive || IsActive.ACTIVE,
+    isVerified: user.isVerified ? "true" : "false", // NEW
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSelectChange = (field: "role" | "isActive", value: string) => {
+  const handleSelectChange = (field: "role" | "isActive" | "isVerified", value: string) => {
     setFormData({ ...formData, [field]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await onSubmit(user._id!, formData);
+      await onSubmit(user._id!, {
+        ...formData,
+        isVerified: formData.isVerified === "true", // convert string → boolean
+      });
       toast.success("User updated successfully");
     } catch (error) {
       toast.error("Failed to update user");
@@ -49,6 +53,7 @@ export const UserEditForm = ({ user, onSubmit }: Props) => {
       <Input name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
 
       <div className="flex gap-4">
+        {/* Role */}
         <Select value={formData.role} onValueChange={(v) => handleSelectChange("role", v)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select Role" />
@@ -60,6 +65,7 @@ export const UserEditForm = ({ user, onSubmit }: Props) => {
           </SelectContent>
         </Select>
 
+        {/* Active Status */}
         <Select value={formData.isActive} onValueChange={(v) => handleSelectChange("isActive", v)}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select Status" />
@@ -71,6 +77,20 @@ export const UserEditForm = ({ user, onSubmit }: Props) => {
           </SelectContent>
         </Select>
       </div>
+
+      {/* NEW: isVerified */}
+      <Select
+        value={formData.isVerified}
+        onValueChange={(v) => handleSelectChange("isVerified", v)}
+      >
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Verified?" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="true">Verified</SelectItem>
+          <SelectItem value="false">Not Verified</SelectItem>
+        </SelectContent>
+      </Select>
 
       <Button type="submit">Update User</Button>
     </form>

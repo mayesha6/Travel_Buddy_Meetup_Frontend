@@ -27,7 +27,6 @@ export default function Home() {
         <TravelPlanServer limit={3}/>
         <SubscriptionServer limit={3}/>
         <UserServer limit={3}/>
-        <Testimonials/>
         <Newsletter/>
       </main>
     </>

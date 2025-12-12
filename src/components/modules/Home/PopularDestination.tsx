@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const destinations = [
-  { name: "Bali", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
+  { name: "Bali", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765504116/tanah-lot-temple-bali-island-indonesia_n6pwjt.jpg" },
   { name: "Paris", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
-  { name: "Nepal", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
-  { name: "Bangkok", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765415013/beautiful-wide-shot-eiffel-tower-paris-surrounded-by-water-with-ships-colorful-sky_lvjqnl.jpg" },
+  { name: "Nepal", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765504146/backpacker-deogyusan-mountains-winter_e7yw9r.jpg" },
+  { name: "Bangkok", img: "https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765503888/beautiful-cityscape-bangkok-highway-bridge-thailand_zgprmf.jpg" },
 ];
 
 export const PopularDestinations = () => {
