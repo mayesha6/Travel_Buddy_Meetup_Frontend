@@ -25,7 +25,7 @@ const LoginForm = ({ redirect }: { redirect?: string }) => {
   };
 
   const handleUserLogin = () => {
-    if (emailRef.current) emailRef.current.value = "mayesha@gmail.com";
+    if (emailRef.current) emailRef.current.value = "utsho926@gmail.com";
     if (passwordRef.current) passwordRef.current.value = "123456";
   };
 

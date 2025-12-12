@@ -6,12 +6,19 @@ import { Button } from "@/components/ui/button";
 
 interface TravelPlanCardProps {
   plan: any;
-  showActions?: boolean; // show edit/delete buttons
+  showActions?: boolean;
   onEdit?: () => void;
   onDelete?: () => void;
+  isLoggedIn?: boolean; // <-- new prop
 }
 
-export default function TravelPlanCard({ plan, showActions = false, onEdit, onDelete }: TravelPlanCardProps) {
+export default function TravelPlanCard({
+  plan,
+  showActions = false,
+  onEdit,
+  onDelete,
+  isLoggedIn = false, // default to false
+}: TravelPlanCardProps) {
   return (
     <div className="border rounded p-4 shadow-md relative hover:shadow-lg transition">
       <h3 className="text-lg font-semibold">{plan.title}</h3>
@@ -22,12 +29,15 @@ export default function TravelPlanCard({ plan, showActions = false, onEdit, onDe
       </p>
 
       <div className="mt-3 text-sm">
-        <div>Dates: {new Date(plan.startDate).toLocaleDateString()} - {new Date(plan.endDate).toLocaleDateString()}</div>
+        <div>
+          Dates: {new Date(plan.startDate).toLocaleDateString()} -{" "}
+          {new Date(plan.endDate).toLocaleDateString()}
+        </div>
         {plan.budgetMin != null && <div>Budget: {plan.budgetMin} - {plan.budgetMax}</div>}
       </div>
 
       <div className="mt-3 flex justify-between items-center">
-        <Link href={`/dashboard/plan/${plan._id}`}>
+        <Link href={isLoggedIn ? `/dashboard/plan/${plan._id}` : "/login"}>
           <Button size="sm">View</Button>
         </Link>
 

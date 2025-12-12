@@ -7,7 +7,8 @@ import { getCookie } from "../auth/tokenHandler";
 
 const BASE_URL = "/user";
 
-export const getAllUsers = async (query?: Record<string, any>) => {
+export const 
+getAllUsers = async (query?: Record<string, any>) => {
   const queryString = query ? "?" + new URLSearchParams(query).toString() : "";
   const res = await serverFetch.get(`${BASE_URL}/all-users${queryString}`);
   if (!res.ok) throw new Error("Failed to fetch users");

@@ -8,19 +8,22 @@ import { deletePlan } from "@/services/travelPlan/travelPlan.service";
 
 interface TravelPlansProps {
   plans: any[];
-  currentUserId?: string | null;   // <-- allow undefined / null
+  currentUserId?: string | null; // <-- allow undefined / null
 }
 
-export default function TravelPlansList({ plans, currentUserId }: TravelPlansProps) {
+export default function TravelPlansList({
+  plans,
+  currentUserId,
+}: TravelPlansProps) {
   const router = useRouter();
 
   // If user is NOT logged in → these become empty arrays
   const myPlans = currentUserId
-    ? plans.filter(plan => plan.host?._id === currentUserId)
+    ? plans.filter((plan) => plan.host?._id === currentUserId)
     : [];
 
   const otherPlans = currentUserId
-    ? plans.filter(plan => plan.host?._id !== currentUserId)
+    ? plans.filter((plan) => plan.host?._id !== currentUserId)
     : plans; // if no login → show all as explore plans
 
   const handleDelete = async (planId: string) => {
@@ -37,20 +40,20 @@ export default function TravelPlansList({ plans, currentUserId }: TravelPlansPro
 
   return (
     <div className="space-y-8">
-
       {/* Show My Plans only if logged in */}
       {currentUserId && (
         <div>
           <h2 className="text-2xl font-bold mb-4">My Plans</h2>
           {myPlans.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {myPlans.map(plan => (
+              {myPlans.map((plan) => (
                 <TravelPlanCard
                   key={plan._id}
                   plan={plan}
                   showActions
                   onEdit={() => router.push(`/dashboard/plan/${plan._id}/edit`)}
                   onDelete={() => handleDelete(plan._id)}
+                  isLoggedIn={!!currentUserId} // <-- pass login state
                 />
               ))}
             </div>
@@ -66,8 +69,12 @@ export default function TravelPlansList({ plans, currentUserId }: TravelPlansPro
 
         {otherPlans.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {otherPlans.map(plan => (
-              <TravelPlanCard key={plan._id} plan={plan} />
+            {otherPlans.map((plan) => (
+              <TravelPlanCard
+                key={plan._id}
+                plan={plan}
+                isLoggedIn={!!currentUserId} // <-- added
+              />
             ))}
           </div>
         ) : (

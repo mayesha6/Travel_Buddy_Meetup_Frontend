@@ -8,16 +8,33 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { UserList } from "@/components/modules/User/UserList";
 import { IUser } from "@/types/user.interface";
-
+import Cookies from "js-cookie"
 const UsersPage = () => {
   const router = useRouter();
   const [users, setUsers] = useState<IUser[]>([]);
+console.log(Cookies.get("accessToken"))
 
+const [value, setValue] = useState<string | undefined>(Cookies.get("accessToken"));
+
+  useEffect(() => {
+    const handleStorageChange = () => setValue(Cookies.get("accessToken"));
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  console.log(value)
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await getAllUsers();
-        setUsers(res.data);
+        const res = await fetch("https://travel-buddy-and-meetup-backend.vercel.app/api/v1/user/all-users",{
+          headers: {
+            "Authorization" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTM5OTE0N2I2NGVmNDFlNTQwYTk5M2YiLCJlbWFpbCI6ImFkbWluMUBleGFtcGxlLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc2NTUyNDc3OSwiZXhwIjoxNzY1NjExMTc5fQ.ShOxm8eOrayhZKTZJJ7PGdTVAok51V5YqLPVxDX4cpY"
+          }
+        });
+        console.log(res)
+        const data = await res.json()
+        console.log(data)
+        setUsers(data.data);
       } catch (error) {
         console.error(error);
         toast.error("Failed to fetch users");
