@@ -50,4 +50,3 @@ export const getUserInfo = async (): Promise<IUser> => {
     };
   }
 };
-

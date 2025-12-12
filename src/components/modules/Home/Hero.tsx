@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
   return (
-    <section className="min-h-[60vh] flex flex-col md:flex-row items-center justify-between container mx-auto px-6 py-10 gap-3">
+    <section className="bg-linear-to-r from-blue-50 to-white">
+      <div className="min-h-[60vh] flex flex-col md:flex-row items-center justify-between container mx-auto px-6 py-10 gap-3">
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -38,6 +39,8 @@ export const Hero = () => {
       >
         <Image src="https://res.cloudinary.com/dtb6o7zzr/image/upload/v1765413924/woman-hand-holding-camera-standing-top-rock-nature-travel-concept_j8z5fu.jpg" alt="Travel" width={700} height={700} />
       </motion.div>
+    </div>
     </section>
+    
   );
 };

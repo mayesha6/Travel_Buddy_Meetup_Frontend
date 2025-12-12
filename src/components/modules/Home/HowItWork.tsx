@@ -18,8 +18,8 @@ const steps = [
 
 export const HowItWorks = () => {
   return (
-    <section className="bg-muted py-16">
-      <div className="container mx-auto px-6">
+      <section className="bg-linear-to-r from-white to-blue-50 ">
+      <div className="container mx-auto px-6 py-16">
         <h2 className="text-3xl font-semibold mb-10 text-center">
           How It Works
         </h2>

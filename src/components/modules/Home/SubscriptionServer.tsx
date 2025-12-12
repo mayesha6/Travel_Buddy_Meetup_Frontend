@@ -15,12 +15,14 @@ export default async function SubscriptionServer({ limit }: SubscriptionServerPr
   return (
     <ServerWrapper data={slicedSubscriptions}>
       {({ data, loggedIn }) => (
-        <section className="container mx-auto px-6 py-16 text-center">
+        <section className="bg-linear-to-r from-blue-50 to-white">
+          <div className="container mx-auto px-6 py-16 text-center">
           <h2 className="text-3xl font-semibold mb-4">Subscriptions</h2>
           <SubscriptionClient subscriptions={data} loggedIn={loggedIn} />
           <div className="mt-6">
             <ViewAllButton label="View All Subscriptions" href="/subscription" />
           </div>
+        </div>
         </section>
       )}
     </ServerWrapper>

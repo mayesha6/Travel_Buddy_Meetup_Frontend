@@ -11,7 +11,8 @@ const destinations = [
 
 export const PopularDestinations = () => {
   return (
-    <section className="container mx-auto px-6 py-16">
+    <section className="bg-linear-to-r from-blue-50 to-white">
+      <div className="container mx-auto px-6 py-16">
       <h2 className="text-3xl font-semibold mb-8 text-center">
         Popular Destinations
       </h2>
@@ -38,6 +39,7 @@ export const PopularDestinations = () => {
           </motion.div>
         ))}
       </div>
+    </div>
     </section>
   );
 };

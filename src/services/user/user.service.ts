@@ -14,6 +14,13 @@ export const getAllUsers = async (query?: Record<string, any>) => {
   return res.json();
 };
 
+// export const getMe = async () => {
+//   const res = await serverFetch.get(`${BASE_URL}/me`);
+//   if (!res.ok) throw new Error("Failed to fetch profile");
+//   const data = await res.json();
+//   return data.data;
+// };
+
 export const getUserById = async (id: string) => {
   const res = await serverFetch.get(`${BASE_URL}/${id}`);
   if (!res.ok) throw new Error("Failed to fetch user");

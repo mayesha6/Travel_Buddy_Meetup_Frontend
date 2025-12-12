@@ -3,10 +3,18 @@
 
 import Image from "next/image";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function UsersClient({ users }: { users: any[] }) {
+  const router = useRouter();
+
   // Show only normal users and premium users
   const normalUsers = users.filter(user => user.role === "USER" || user.role === "PREMIUM");
+
+  const handleView = (userId: string) => {
+    router.push(`users//user/view-user/${userId}`);
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -21,7 +29,6 @@ export default function UsersClient({ users }: { users: any[] }) {
                 height={80}
                 className="rounded-full object-cover"
                 onError={(e) => {
-                  // Hide broken image
                   const img = e.currentTarget as HTMLImageElement;
                   img.style.display = "none";
                 }}
@@ -30,8 +37,11 @@ export default function UsersClient({ users }: { users: any[] }) {
             <CardTitle>{user.name}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Location: {user.address}</p>
-            <p>Interests: {user.travelInterests?.join(", ")}</p>
+            <p>Location: {user.address || "Not specified"}</p>
+            <p>Interests: {user.travelInterests?.join(", ") || "Not specified"}</p>
+            <Button className="mt-2 w-full" onClick={() => handleView(user._id)}>
+              View Profile
+            </Button>
           </CardContent>
         </Card>
       ))}

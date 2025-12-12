@@ -20,14 +20,14 @@ interface DashboardMobileSidebarContentProps {
 const DashboardMobileSidebar = ({
   userInfo,
   navItems,
-  dashboardHome,
+  // dashboardHome,
 }: DashboardMobileSidebarContentProps) => {
   const pathname = usePathname();
   return (
     <div className=" flex h-full flex-col">
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href={dashboardHome}>
+        <Link href="/">
           <span className="text-xl font-bold text-primary">Dream.</span>
         </Link>
       </div>

@@ -6,18 +6,24 @@ import LogoutButton from "./LogoutButton";
 import { getCookie } from "@/services/auth/tokenHandler";
 
 const PublicNavbar = async () => {
-  const navItems = [
-    { href: "#", label: "Explore Travelers" },
-    { href: "#", label: "Find Travel Buddy" },
-    { href: "#", label: "My Travel Plans" },
-    { href: "#", label: "About" },
-    { href: "#", label: "Contact" },
-  ];
-
   const accessToken = await getCookie("accessToken");
   const isLoggedIn = !!accessToken;
 
-  // Conditional dashboard link
+  // Nav items based on login state
+  const navItems = isLoggedIn
+    ? [
+        { href: "/users", label: "Explore Travelers" },
+        { href: "/travel-plan", label: "Travel Plans" },
+        { href: "/travel-request", label: "Travel Requests / Meetups" },
+        { href: "/subscription", label: "Upgrade to Premium" },
+        { href: "/profile", label: "Profile" },
+      ]
+    : [
+        { href: "/users", label: "Explore Travelers" },
+        { href: "/travel-plan", label: "Travel Plans" },
+        { href: "/register", label: "Register" },
+      ];
+
   const dashboardHref = isLoggedIn ? "/dashboard" : "/login";
 
   return (
@@ -27,6 +33,7 @@ const PublicNavbar = async () => {
           <span className="text-xl font-bold text-primary">Dream.</span>
         </Link>
 
+        {/* Desktop Navbar */}
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           {navItems.map((link) => (
             <Link
@@ -38,7 +45,7 @@ const PublicNavbar = async () => {
             </Link>
           ))}
 
-          {/* Dashboard link */}
+          {/* Always show dashboard for logged-in */}
           <Link
             href={dashboardHref}
             className="text-foreground hover:text-primary transition-colors"
@@ -47,14 +54,9 @@ const PublicNavbar = async () => {
           </Link>
         </nav>
 
+        {/* Login / Logout */}
         <div className="hidden md:flex items-center space-x-2">
-          {isLoggedIn ? (
-            <LogoutButton />
-          ) : (
-            <Link href="/login">
-              <Button>Login</Button>
-            </Link>
-          )}
+          {isLoggedIn ? <LogoutButton /> : <Link href="/login"><Button>Login</Button></Link>}
         </div>
 
         {/* Mobile Menu */}
@@ -69,20 +71,12 @@ const PublicNavbar = async () => {
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <nav className="flex flex-col space-y-4 mt-8">
                 {navItems.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="text-lg font-medium"
-                  >
+                  <Link key={link.label} href={link.href} className="text-lg font-medium">
                     {link.label}
                   </Link>
                 ))}
 
-                {/* Dashboard link */}
-                <Link
-                  href={dashboardHref}
-                  className="text-lg font-medium"
-                >
+                <Link href={dashboardHref} className="text-lg font-medium">
                   Dashboard
                 </Link>
 

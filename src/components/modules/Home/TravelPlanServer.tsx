@@ -21,8 +21,8 @@ export default async function TravelPlanServer({ limit }: TravelPlanServerProps)
   return (
     <ServerWrapper data={slicedPlans}>
       {({ data, loggedIn }) => (
-        <section className="bg-muted py-16">
-          <div className="container mx-auto px-6 text-center">
+        <section className="bg-linear-to-r from-white to-blue-50">
+          <div className="container mx-auto px-6 text-center py-16">
             <h2 className="text-3xl font-semibold mb-4">Travel Plans</h2>
             <TravelPlanClient
               plans={data}
