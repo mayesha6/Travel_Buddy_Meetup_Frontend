@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
+// import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
 import { serverFetch } from "@/lib/server-fetch";
-import { zodValidator } from "@/lib/zodValidator";
-import { resetPasswordSchema } from "@/zod/auth.validation";
+// import { zodValidator } from "@/lib/zodValidator";
+// import { resetPasswordSchema } from "@/zod/auth.validation";
 import { parse } from "cookie";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { revalidateTag } from "next/cache";
-import { redirect } from "next/navigation";
-import { getUserInfo } from "./getUserInfo";
+// import { redirect } from "next/navigation";
+// import { getUserInfo } from "./getUserInfo";
 import { deleteCookie, getCookie, setCookie } from "./tokenHandler";
 import { verifyAccessToken } from "@/lib/jwtHandlers";
 
@@ -65,82 +65,82 @@ export async function updateMyProfile(formData: FormData) {
   }
 }
 
-export async function resetPassword(_prevState: any, formData: FormData) {
+// export async function resetPassword(_prevState: any, formData: FormData) {
 
-    const redirectTo = formData.get('redirect') || null;
+//     const redirectTo = formData.get('redirect') || null;
 
-    const validationPayload = {
-        newPassword: formData.get("newPassword") as string,
-        confirmPassword: formData.get("confirmPassword") as string,
-    };
+//     const validationPayload = {
+//         newPassword: formData.get("newPassword") as string,
+//         confirmPassword: formData.get("confirmPassword") as string,
+//     };
 
-    const validatedPayload = zodValidator(validationPayload, resetPasswordSchema);
+//     const validatedPayload = zodValidator(validationPayload, resetPasswordSchema);
 
-    if (!validatedPayload.success && validatedPayload.errors) {
-        return {
-            success: false,
-            message: "Validation failed",
-            formData: validationPayload,
-            errors: validatedPayload.errors,
-        };
-    }
+//     if (!validatedPayload.success && validatedPayload.errors) {
+//         return {
+//             success: false,
+//             message: "Validation failed",
+//             formData: validationPayload,
+//             errors: validatedPayload.errors,
+//         };
+//     }
 
-    try {
+//     try {
 
-        const accessToken = await getCookie("accessToken");
+//         const accessToken = await getCookie("accessToken");
 
-        if (!accessToken) {
-            throw new Error("User not authenticated");
-        }
+//         if (!accessToken) {
+//             throw new Error("User not authenticated");
+//         }
 
-        const verifiedToken = jwt.verify(accessToken as string, process.env.JWT_SECRET!) as jwt.JwtPayload;
+//         const verifiedToken = jwt.verify(accessToken as string, process.env.JWT_SECRET!) as jwt.JwtPayload;
 
-        const userRole: UserRole = verifiedToken.role;
+//         const userRole: UserRole = verifiedToken.role;
 
-        const user = await getUserInfo();
-        const response = await serverFetch.post("/auth/reset-password", {
-            body: JSON.stringify({
-                id: user?._id,
-                password: validationPayload.newPassword,
-            }),
-            headers: {
-                "Authorization": accessToken,
-                "Content-Type": "application/json",
-            },
-        });
+//         const user = await getUserInfo();
+//         const response = await serverFetch.post("/auth/reset-password", {
+//             body: JSON.stringify({
+//                 id: user?._id,
+//                 password: validationPayload.newPassword,
+//             }),
+//             headers: {
+//                 "Authorization": accessToken,
+//                 "Content-Type": "application/json",
+//             },
+//         });
 
-        const result = await response.json();
+//         const result = await response.json();
 
-        if (!result.success) {
-            throw new Error(result.message || "Reset password failed");
-        }
+//         if (!result.success) {
+//             throw new Error(result.message || "Reset password failed");
+//         }
 
-        if (result.success) {
-            revalidateTag("user-info", { expire: 0 });
-        }
+//         if (result.success) {
+//             revalidateTag("user-info", { expire: 0 });
+//         }
 
-        if (redirectTo) {
-            const requestedPath = redirectTo.toString();
-            if (isValidRedirectForRole(requestedPath, userRole)) {
-                redirect(`${requestedPath}?loggedIn=true`);
-            } else {
-                redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-            }
-        } else {
-            redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-        }
+//         if (redirectTo) {
+//             const requestedPath = redirectTo.toString();
+//             if (isValidRedirectForRole(requestedPath, userRole)) {
+//                 redirect(`${requestedPath}?loggedIn=true`);
+//             } else {
+//                 redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
+//             }
+//         } else {
+//             redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
+//         }
 
-    } catch (error: any) {
-        if (error?.digest?.startsWith("NEXT_REDIRECT")) {
-            throw error;
-        }
-        return {
-            success: false,
-            message: error?.message || "Something went wrong",
-            formData: validationPayload,
-        };
-    }
-}
+//     } catch (error: any) {
+//         if (error?.digest?.startsWith("NEXT_REDIRECT")) {
+//             throw error;
+//         }
+//         return {
+//             success: false,
+//             message: error?.message || "Something went wrong",
+//             formData: validationPayload,
+//         };
+//     }
+// }
 
 export async function getNewAccessToken() {
     try {
@@ -246,3 +246,50 @@ export async function getNewAccessToken() {
     }
 
 }
+
+export const forgetPassword = async (email: string) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/forgot-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+      cache: "no-store",
+    });
+
+    const result = await response.json();
+    return result; 
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
+  }
+};
+
+
+
+export const resetPassword = async (token: string, password: string) => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/reset-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token, password }),
+        cache: "no-store",
+      }
+    );
+
+    const result = await response.json();
+    return result; // { success, message }
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
+  }
+};

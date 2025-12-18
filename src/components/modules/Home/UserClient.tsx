@@ -9,10 +9,12 @@ import { useRouter } from "next/navigation";
 export default function UsersClient({ users }: { users: any[] }) {
   const router = useRouter();
 
-  const normalUsers = users.filter(user => user.role === "USER" || user.role === "PREMIUM");
+  const normalUsers = users.filter(
+    (user) => user.role === "USER" || user.role === "PREMIUM"
+  );
 
   const handleView = (userId: string) => {
-    router.push(`admin/users/user/view-user/${userId}`);
+    router.push(`users/user/view-user/${userId}`);
   };
 
   return (
@@ -20,25 +22,32 @@ export default function UsersClient({ users }: { users: any[] }) {
       {normalUsers.map((user) => (
         <Card key={user._id}>
           <CardHeader className="flex flex-col items-center gap-4">
-            {user?.picture && user.picture.startsWith("http") && (
+            {user?.picture && user.picture.startsWith("http") ? (
               <Image
                 src={user.picture}
                 alt={user.name || "User"}
                 width={80}
                 height={80}
-                className="rounded-full object-cover"
+                className="rounded-full object-cover w-20 h-20"
                 onError={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
                   img.style.display = "none";
                 }}
               />
+            ) : (
+              <div className="rounded-full bg-zinc-200 w-20 h-20"></div>
             )}
             <CardTitle>{user.name}</CardTitle>
           </CardHeader>
           <CardContent>
             <p>Location: {user.address || "Not specified"}</p>
-            <p>Interests: {user.travelInterests?.join(", ") || "Not specified"}</p>
-            <Button className="mt-2 w-full" onClick={() => handleView(user._id)}>
+            <p>
+              Interests: {user.travelInterests?.join(", ") || "Not specified"}
+            </p>
+            <Button
+              className="mt-2 w-full"
+              onClick={() => handleView(user._id)}
+            >
               View Profile
             </Button>
           </CardContent>

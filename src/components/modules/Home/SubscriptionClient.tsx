@@ -22,7 +22,7 @@ export default function SubscriptionClient({ subscriptions, loggedIn }: Subscrip
       return;
     }
     else{
-      router.push("/dashboard/plan");
+      router.push("/dashboard/user/subscription");
     }
   };
 
