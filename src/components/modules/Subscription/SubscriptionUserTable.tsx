@@ -13,7 +13,7 @@ export default function SubscriptionUserTable({ data }: any) {
   return (
     <div className="space-y-4">
       <table className="w-full border text-sm">
-        <thead className="bg-gray-50">
+        <thead className="border-b border-b-gray-400">
           <tr>
             <th className="p-3 text-left">Name</th>
             <th className="p-3 text-left">Price</th>

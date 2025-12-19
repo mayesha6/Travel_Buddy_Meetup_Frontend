@@ -11,7 +11,7 @@ export default function ChangePasswordPage() {
   const [state, formAction, isPending] = useActionState(changePassword, initialState);
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow">
+    <div className="max-w-md mx-auto mt-10 p-6 rounded-xl shadow">
       <h2 className="text-xl font-bold mb-4">Change Password</h2>
 
       <form action={formAction} className="space-y-4">
@@ -44,7 +44,7 @@ export default function ChangePasswordPage() {
         <button
           type="submit"
           disabled={isPending}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white py-2 rounded"
         >
           {isPending ? "Changing..." : "Change Password"}
         </button>

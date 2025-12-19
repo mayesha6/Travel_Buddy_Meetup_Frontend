@@ -73,7 +73,7 @@ export const Hero = () => {
   const slide = slides[index];
 
   return (
-    <section className="bg-linear-to-r from-blue-50 to-white overflow-hidden relative">
+    <section className="bg-linear-to-r from-blue-50 to-white dark:from-zinc-900 dark:to-zinc-800 overflow-hidden relative">
       <div className="min-h-[60vh] flex items-center container mx-auto px-6 py-10">
         <AnimatePresence mode="wait">
           <motion.div
@@ -84,7 +84,6 @@ export const Hero = () => {
             transition={{ duration: 0.6 }}
             className="flex flex-col md:flex-row items-center justify-between gap-6 w-full"
           >
-            {/* Text */}
             <div className="max-w-xl">
               <h1 className="text-4xl md:text-6xl font-bold leading-tight">
                 {slide.title.split(slide.highlight)[0]}
@@ -105,7 +104,6 @@ export const Hero = () => {
               </div>
             </div>
 
-            {/* Image */}
             <div className="mt-10 md:mt-0">
               <Image
                 src={slide.image}
@@ -120,7 +118,6 @@ export const Hero = () => {
         </AnimatePresence>
       </div>
 
-      {/* Prev Button */}
       <button
         onClick={prevSlide}
         className="hidden xl:flex absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg p-3 rounded-full"
@@ -129,7 +126,6 @@ export const Hero = () => {
         <ChevronLeft className="w-6 h-6" />
       </button>
 
-      {/* Next Button */}
       <button
         onClick={nextSlide}
         className="hidden xl:flex absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg p-3 rounded-full"
@@ -138,7 +134,6 @@ export const Hero = () => {
         <ChevronRight className="w-6 h-6" />
       </button>
 
-      {/* 🔘 Dots Indicator */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3">
         {slides.map((_, i) => (
           <button

@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
 import LogoutButton from "./LogoutButton";
 import { getCookie } from "@/services/auth/tokenHandler";
+import { ModeToggle } from "../ModeToggle";
 
 const PublicNavbar = async () => {
   const accessToken = await getCookie("accessToken");
@@ -52,6 +53,8 @@ const PublicNavbar = async () => {
           >
             Dashboard
           </Link>
+
+          <ModeToggle />
         </nav>
 
         {/* Login / Logout */}
@@ -66,8 +69,13 @@ const PublicNavbar = async () => {
               <Button variant="outline">
                 <Menu />
               </Button>
+              
             </SheetTrigger>
+            
             <SheetContent side="right" className="w-[300px] sm:w-[400px] p-4">
+              <div className="pt-4">
+                  <ModeToggle />
+                </div>
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <nav className="flex flex-col space-y-4 mt-8">
                 {navItems.map((link) => (
