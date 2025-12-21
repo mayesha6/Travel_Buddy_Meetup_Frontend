@@ -1,5 +1,5 @@
 import { Hero } from "@/components/modules/Home/Hero";
-import { HowItWorks } from "@/components/modules/Home/HowItWork";
+import { HowItWork } from "@/components/modules/Home/HowItWork";
 import { Newsletter } from "@/components/modules/Home/NewsLetter";
 import { PopularDestinations } from "@/components/modules/Home/PopularDestination";
 import SubscriptionServer from "@/components/modules/Home/SubscriptionServer";
@@ -21,7 +21,7 @@ export default function Home() {
       </Head>
       <main>
         <Hero />
-        <HowItWorks/>
+        <HowItWork/>
         <PopularDestinations/>
         <TravelPlanServer limit={3}/>
         <SubscriptionServer limit={3}/>

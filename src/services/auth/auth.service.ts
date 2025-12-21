@@ -1,16 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
-// import { getDefaultDashboardRoute, isValidRedirectForRole, UserRole } from "@/lib/auth-utils";
 import { serverFetch } from "@/lib/server-fetch";
-// import { zodValidator } from "@/lib/zodValidator";
-// import { resetPasswordSchema } from "@/zod/auth.validation";
+import { zodValidator } from "@/lib/zodValidator";
 import { parse } from "cookie";
 // import jwt from "jsonwebtoken";
 import { revalidateTag } from "next/cache";
-// import { redirect } from "next/navigation";
-// import { getUserInfo } from "./getUserInfo";
 import { deleteCookie, getCookie, setCookie } from "./tokenHandler";
 import { verifyAccessToken } from "@/lib/jwtHandlers";
+import { forgotPasswordSchema } from "@/zod/auth.validation";
 
 export async function updateMyProfile(formData: FormData) {
   try {
@@ -65,231 +62,171 @@ export async function updateMyProfile(formData: FormData) {
   }
 }
 
-// export async function resetPassword(_prevState: any, formData: FormData) {
-
-//     const redirectTo = formData.get('redirect') || null;
-
-//     const validationPayload = {
-//         newPassword: formData.get("newPassword") as string,
-//         confirmPassword: formData.get("confirmPassword") as string,
-//     };
-
-//     const validatedPayload = zodValidator(validationPayload, resetPasswordSchema);
-
-//     if (!validatedPayload.success && validatedPayload.errors) {
-//         return {
-//             success: false,
-//             message: "Validation failed",
-//             formData: validationPayload,
-//             errors: validatedPayload.errors,
-//         };
-//     }
-
-//     try {
-
-//         const accessToken = await getCookie("accessToken");
-
-//         if (!accessToken) {
-//             throw new Error("User not authenticated");
-//         }
-
-//         const verifiedToken = jwt.verify(accessToken as string, process.env.JWT_SECRET!) as jwt.JwtPayload;
-
-//         const userRole: UserRole = verifiedToken.role;
-
-//         const user = await getUserInfo();
-//         const response = await serverFetch.post("/auth/reset-password", {
-//             body: JSON.stringify({
-//                 id: user?._id,
-//                 password: validationPayload.newPassword,
-//             }),
-//             headers: {
-//                 "Authorization": accessToken,
-//                 "Content-Type": "application/json",
-//             },
-//         });
-
-//         const result = await response.json();
-
-//         if (!result.success) {
-//             throw new Error(result.message || "Reset password failed");
-//         }
-
-//         if (result.success) {
-//             revalidateTag("user-info", { expire: 0 });
-//         }
-
-//         if (redirectTo) {
-//             const requestedPath = redirectTo.toString();
-//             if (isValidRedirectForRole(requestedPath, userRole)) {
-//                 redirect(`${requestedPath}?loggedIn=true`);
-//             } else {
-//                 redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-//             }
-//         } else {
-//             redirect(`${getDefaultDashboardRoute(userRole)}?loggedIn=true`);
-//         }
-
-//     } catch (error: any) {
-//         if (error?.digest?.startsWith("NEXT_REDIRECT")) {
-//             throw error;
-//         }
-//         return {
-//             success: false,
-//             message: error?.message || "Something went wrong",
-//             formData: validationPayload,
-//         };
-//     }
-// }
-
 export async function getNewAccessToken() {
-    try {
-        const accessToken = await getCookie("accessToken");
-        const refreshToken = await getCookie("refreshToken");
+  try {
+    const accessToken = await getCookie("accessToken");
+    const refreshToken = await getCookie("refreshToken");
 
-        if (!accessToken && !refreshToken) {
-            return {
-                tokenRefreshed: false,
-            }
-        }
-
-        if (accessToken) {
-            const verifiedToken = await verifyAccessToken(accessToken);
-
-            if (verifiedToken.success) {
-                return {
-                    tokenRefreshed: false,
-                }
-            }
-        }
-
-        if (!refreshToken) {
-            return {
-                tokenRefreshed: false,
-            }
-        }
-
-        let accessTokenObject: null | any = null;
-        let refreshTokenObject: null | any = null;
-
-        const response = await serverFetch.post("/auth/refresh-token", {
-            headers: {
-                Cookie: `refreshToken=${refreshToken}`,
-            },
-        });
-
-        const result = await response.json();
-
-        console.log("access token refreshed!!");
-
-        const setCookieHeaders = response.headers.getSetCookie();
-
-        if (setCookieHeaders && setCookieHeaders.length > 0) {
-            setCookieHeaders.forEach((cookie: string) => {
-                const parsedCookie = parse(cookie);
-
-                if (parsedCookie['accessToken']) {
-                    accessTokenObject = parsedCookie;
-                }
-                if (parsedCookie['refreshToken']) {
-                    refreshTokenObject = parsedCookie;
-                }
-            })
-        } else {
-            throw new Error("No Set-Cookie header found");
-        }
-
-        if (!accessTokenObject) {
-            throw new Error("Tokens not found in cookies");
-        }
-
-        if (!refreshTokenObject) {
-            throw new Error("Tokens not found in cookies");
-        }
-
-        await deleteCookie("accessToken");
-        await setCookie("accessToken", accessTokenObject.accessToken, {
-            secure: true,
-            httpOnly: true,
-            maxAge: parseInt(accessTokenObject['Max-Age']) || 1000 * 60 * 60,
-            path: accessTokenObject.Path || "/",
-            sameSite: accessTokenObject['SameSite'] || "none",
-        });
-
-        await deleteCookie("refreshToken");
-        await setCookie("refreshToken", refreshTokenObject.refreshToken, {
-            secure: true,
-            httpOnly: true,
-            maxAge: parseInt(refreshTokenObject['Max-Age']) || 1000 * 60 * 60 * 24 * 90,
-            path: refreshTokenObject.Path || "/",
-            sameSite: refreshTokenObject['SameSite'] || "none",
-        });
-
-        if (!result.success) {
-            throw new Error(result.message || "Token refresh failed");
-        }
-
-
-        return {
-            tokenRefreshed: true,
-            success: true,
-            message: "Token refreshed successfully"
-        };
-
-
-    } catch (error: any) {
-        return {
-            tokenRefreshed: false,
-            success: false,
-            message: error?.message || "Something went wrong",
-        };
+    if (!accessToken && !refreshToken) {
+      return {
+        tokenRefreshed: false,
+      };
     }
 
-}
+    if (accessToken) {
+      const verifiedToken = await verifyAccessToken(accessToken);
 
-export const forgetPassword = async (email: string) => {
-  try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/forgot-password`, {
-      method: "POST",
+      if (verifiedToken.success) {
+        return {
+          tokenRefreshed: false,
+        };
+      }
+    }
+
+    if (!refreshToken) {
+      return {
+        tokenRefreshed: false,
+      };
+    }
+
+    let accessTokenObject: null | any = null;
+    let refreshTokenObject: null | any = null;
+
+    const response = await serverFetch.post("/auth/refresh-token", {
       headers: {
-        "Content-Type": "application/json",
+        Cookie: `refreshToken=${refreshToken}`,
       },
-      body: JSON.stringify({ email }),
-      cache: "no-store",
     });
 
     const result = await response.json();
-    return result; 
+
+    console.log("access token refreshed!!");
+
+    const setCookieHeaders = response.headers.getSetCookie();
+
+    if (setCookieHeaders && setCookieHeaders.length > 0) {
+      setCookieHeaders.forEach((cookie: string) => {
+        const parsedCookie = parse(cookie);
+
+        if (parsedCookie["accessToken"]) {
+          accessTokenObject = parsedCookie;
+        }
+        if (parsedCookie["refreshToken"]) {
+          refreshTokenObject = parsedCookie;
+        }
+      });
+    } else {
+      throw new Error("No Set-Cookie header found");
+    }
+
+    if (!accessTokenObject) {
+      throw new Error("Tokens not found in cookies");
+    }
+
+    if (!refreshTokenObject) {
+      throw new Error("Tokens not found in cookies");
+    }
+
+    await deleteCookie("accessToken");
+    await setCookie("accessToken", accessTokenObject.accessToken, {
+      secure: true,
+      httpOnly: true,
+      maxAge: parseInt(accessTokenObject["Max-Age"]) || 1000 * 60 * 60,
+      path: accessTokenObject.Path || "/",
+      sameSite: accessTokenObject["SameSite"] || "none",
+    });
+
+    await deleteCookie("refreshToken");
+    await setCookie("refreshToken", refreshTokenObject.refreshToken, {
+      secure: true,
+      httpOnly: true,
+      maxAge:
+        parseInt(refreshTokenObject["Max-Age"]) || 1000 * 60 * 60 * 24 * 90,
+      path: refreshTokenObject.Path || "/",
+      sameSite: refreshTokenObject["SameSite"] || "none",
+    });
+
+    if (!result.success) {
+      throw new Error(result.message || "Token refresh failed");
+    }
+
+    return {
+      tokenRefreshed: true,
+      success: true,
+      message: "Token refreshed successfully",
+    };
   } catch (error: any) {
     return {
+      tokenRefreshed: false,
       success: false,
-      message: error.message || "Something went wrong",
+      message: error?.message || "Something went wrong",
     };
   }
-};
+}
 
+export async function forgotPassword(_prevState: any, formData: FormData) {
+  const validationPayload = {
+    email: formData.get("email") as string,
+  };
 
+  const validatedPayload = zodValidator(
+    validationPayload,
+    forgotPasswordSchema
+  );
 
-export const resetPassword = async (token: string, password: string) => {
+  if (!validatedPayload.success && validatedPayload.errors) {
+    return {
+      success: false,
+      message: "Validation failed",
+      formData: validationPayload,
+      errors: validatedPayload.errors,
+    };
+  }
+
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/reset-password`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token, password }),
-        cache: "no-store",
-      }
-    );
+    const response = await serverFetch.post("/auth/forgot-password", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: validationPayload.email,
+      }),
+    });
 
     const result = await response.json();
-    return result; // { success, message }
+
+    if (!result.success) {
+      throw new Error(result.message || "Failed to send reset link");
+    }
+
+    return {
+      success: true,
+      message: "Password reset link has been sent to your email!",
+    };
   } catch (error: any) {
     return {
       success: false,
-      message: error.message || "Something went wrong",
+      message: error?.message || "Something went wrong",
+      formData: validationPayload,
     };
   }
-};
+}
+
+export async function resetPassword(payload: { password: string; token: string }) {
+  const response = await serverFetch.post("/auth/reset-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${payload.token}` // ✅ token is sent correctly
+    },
+    body: JSON.stringify({ newPassword: payload.password }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.message || "Failed to reset password");
+  }
+
+  return data;
+}
