@@ -10,7 +10,6 @@ const PublicNavbar = async () => {
   const accessToken = await getCookie("accessToken");
   const isLoggedIn = !!accessToken;
 
-  // Nav items based on login state
   const navItems = isLoggedIn
     ? [
         { href: "/users", label: "Explore Travelers" },
@@ -28,13 +27,12 @@ const PublicNavbar = async () => {
   const dashboardHref = isLoggedIn ? "/dashboard" : "/login";
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur dark:bg-background/95">
+    <header className="sticky top-0 z-50 w-full border-b bg-linear-to-r from-white to-blue-50 dark:from-zinc-800 dark:to-zinc-900">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
           <span className="text-xl font-bold text-primary">Dream.</span>
         </Link>
 
-        {/* Desktop Navbar */}
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
           {navItems.map((link) => (
             <Link
@@ -46,7 +44,6 @@ const PublicNavbar = async () => {
             </Link>
           ))}
 
-          {/* Always show dashboard for logged-in */}
           <Link
             href={dashboardHref}
             className="text-foreground hover:text-primary transition-colors"
@@ -57,12 +54,10 @@ const PublicNavbar = async () => {
           <ModeToggle />
         </nav>
 
-        {/* Login / Logout */}
         <div className="hidden md:flex items-center space-x-2">
           {isLoggedIn ? <LogoutButton /> : <Link href="/login"><Button>Login</Button></Link>}
         </div>
 
-        {/* Mobile Menu */}
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>

@@ -2,47 +2,24 @@
 import { getNewAccessToken } from "@/services/auth/auth.service";
 import { getCookie } from "@/services/auth/tokenHandler";
 
-
 const BACKEND_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL || "http://localhost:5000/api/v1" || "https://travel-buddy-and-meetup-backend.vercel.app/api/v1";
 
-
-// const serverFetchHelper = async (endpoint: string, options: RequestInit): Promise<Response> => {
-//     const { headers, body, ...restOptions } = options;
-
-//     const accessToken = await getCookie("accessToken");
-
-//     if (endpoint !== "/auth/refresh-token") {
-//         await getNewAccessToken();
-//     }
-
-//     const isFormData = body instanceof FormData;
-
-//     return fetch(`${BACKEND_API_URL}${endpoint}`, {
-//         method: restOptions.method,
-//         body,
-//         headers: isFormData
-//             ? {
-//                   Cookie: accessToken ? `accessToken=${accessToken}` : "",
-//               }
-//             : {
-//                   "Content-Type": "application/json",
-//                   Cookie: accessToken ? `accessToken=${accessToken}` : "",
-//                   ...headers,
-//               },
-//         credentials: "include",
-//         ...restOptions,
-//     });
-// };
-
+const PUBLIC_ENDPOINTS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+];
 
 const serverFetchHelper = async (endpoint: string, options: RequestInit): Promise<Response> => {
     const { headers, body, ...restOptions } = options;
 
-    if (endpoint !== "/auth/refresh-token") {
+    const accessToken = await getCookie("accessToken");
+
+    if (!PUBLIC_ENDPOINTS.includes(endpoint)) {
         await getNewAccessToken();
     }
 
-    const accessToken = await getCookie("accessToken");
     const isFormData = body instanceof FormData;
 
     return fetch(`${BACKEND_API_URL}${endpoint}`, {
@@ -50,17 +27,21 @@ const serverFetchHelper = async (endpoint: string, options: RequestInit): Promis
         body,
         headers: isFormData
             ? {
-                  ...(accessToken && { Authorization: `Bearer ${accessToken}` }), // Use Authorization header instead
+                  Cookie: accessToken ? `accessToken=${accessToken}` : "",
               }
             : {
                   "Content-Type": "application/json",
-                  ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+                  Cookie: accessToken ? `accessToken=${accessToken}` : "",
                   ...headers,
               },
-        credentials: "include", // This tells browser to send cookies
+        credentials: "include",
         ...restOptions,
     });
 };
+
+
+
+
 
 export const serverFetch = {
     get: async (endpoint: string, options: RequestInit = {}): Promise<Response> => serverFetchHelper(endpoint, { ...options, method: "GET" }),

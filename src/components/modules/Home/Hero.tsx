@@ -111,7 +111,8 @@ export const Hero = () => {
                 width={700}
                 height={460}
                 className="rounded-2xl shadow-lg"
-                priority
+                priority={true}
+                fetchPriority="high"
               />
             </div>
           </motion.div>

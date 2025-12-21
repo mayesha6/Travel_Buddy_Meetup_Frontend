@@ -45,8 +45,7 @@ export const loginValidationZodSchema = z.object({
     .max(100, { message: "Password must be at most 100 characters long" }),
 });
 
-export const resetPasswordSchema = z
-  .object({
+export const resetPasswordSchema = z.object({
     newPassword: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z
       .string()
@@ -55,4 +54,8 @@ export const resetPasswordSchema = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
-  });
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.email("Please enter a valid email address"),
+});
